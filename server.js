@@ -1,6 +1,7 @@
 const express = require("express");
 const createPath = require("./helpers/create-path");
 const app = express();
+const postApiRoutes = require("./routes/api-post-routes");
 const morgan = require("morgan");
 const MethodOverride = require("method-override");
 const mongoose = require("mongoose");
@@ -43,6 +44,7 @@ app.get("/", (req, res) => {
 });
 
 app.use(postRoutes);
+app.use(postApiRoutes);
 
 app.use((req, res) => {
   const title = "Error";
