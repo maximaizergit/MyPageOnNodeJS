@@ -52,28 +52,23 @@ app.get("/contacts", (req, res) => {
 
 app.get("/posts", (req, res) => {
   const title = "Posts";
-  const posts = [
-    {
-      id: "1",
-      text: "Lorem ipsum dolor sit amet...",
-      title: " Post title",
-      date: "05.05.2021",
-      author: "Unknown",
-    },
-  ];
-  res.render(createPath("posts"), { title, posts });
+  Post.find()
+    .sort({ createdAt: -1 })
+    .then((posts) => res.render(createPath("posts"), { posts, title }))
+    .catch((error) => {
+      console.log(error);
+      res.render(createPath("error"), { title: "Error" });
+    });
 });
 
 app.get("/posts/:id", (req, res) => {
   const title = "Post";
-  const post = {
-    id: "1",
-    text: "Lorem ipsum dolor sit amet...",
-    title: " Post title",
-    date: "05.05.2021",
-    author: "Unknown",
-  };
-  res.render(createPath("post"), { title, post });
+  Post.findById(req.params.id)
+    .then((post) => res.render(createPath("post"), { post, title }))
+    .catch((error) => {
+      console.log(error);
+      res.render(createPath("error"), { title: "Error" });
+    });
 });
 
 app.post("/add-post", (req, res) => {
@@ -81,7 +76,7 @@ app.post("/add-post", (req, res) => {
   const post = new Post({ title, author, text });
   post
     .save()
-    .then((result) => res.send(result))
+    .then((result) => res.redirect("/posts"))
     .catch((error) => {
       console.log(error);
       res.render(createPath("error"), { title: "Error" });

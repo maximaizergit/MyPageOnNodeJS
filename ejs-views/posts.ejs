@@ -5,16 +5,16 @@
     <%- include ('./partials/nav.ejs') %>
     <h1>Posts:</h1>
     <ul>
-      <% if (posts.length){ %> <% posts.forEach(({ id, title, date, text,
+      <% if (posts.length){ %> <% posts.forEach(({ id, title, createdAt, text,
       author})=>{%>
       <li>
         <article>
           <h2>
-            <a href="/posts/1"><%= title %></a>
+            <a href="/posts/<%= id %>"><%= title %></a>
           </h2>
           <p><%= text %></p>
           <div class="info">
-            <span><%= date %></span>
+            <span><%= createdAt.toLocaleDateString() %></span>
             <span><%= author %></span>
           </div>
         </article>
